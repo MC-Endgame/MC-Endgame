@@ -1,6 +1,7 @@
 package de.fuballer.mcendgame.component.custom_entity.types.melee_skeleton
 
 import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
 
 object MeleeSkeletonEntityType : CustomEntityType {
@@ -22,4 +23,7 @@ object MeleeSkeletonEntityType : CustomEntityType {
 
     override val sounds = null
     override val abilities = null
+
+    override val spawnEgg = Material.SKELETON_SPAWN_EGG
+    override val description = "Melee attacks."
 }

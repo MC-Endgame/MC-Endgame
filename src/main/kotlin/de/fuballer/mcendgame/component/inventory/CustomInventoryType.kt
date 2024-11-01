@@ -4,5 +4,7 @@ enum class CustomInventoryType {
     TOTEM,
     KILLER,
     FILTER,
-    MAP_DEVICE
+    MAP_DEVICE,
+    TRIAL_DEVICE,
+    TRIAL_PARTY,
 }

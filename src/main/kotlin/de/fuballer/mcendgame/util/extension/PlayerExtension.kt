@@ -8,8 +8,8 @@ import org.bukkit.entity.Player
 import java.util.*
 
 object PlayerExtension {
-    fun Player.setLastMapDevice(value: UUID) = PersistentDataUtil.setValue(this, TypeKeys.LAST_MAP_DEVICE, value)
-    fun Player.getLastMapDevice() = PersistentDataUtil.getValue(this, TypeKeys.LAST_MAP_DEVICE)
+    fun Player.setLastDevice(value: UUID) = PersistentDataUtil.setValue(this, TypeKeys.LAST_DEVICE, value)
+    fun Player.getLastDevice() = PersistentDataUtil.getValue(this, TypeKeys.LAST_DEVICE)
     fun Player.setTotems(value: List<Totem>) = PersistentDataUtil.setValue(this, TypeKeys.TOTEMS, value)
     fun Player.getTotems() = PersistentDataUtil.getValue(this, TypeKeys.TOTEMS)
     fun Player.setHealOnBlockActivation(value: Long) = PersistentDataUtil.setValue(this, TypeKeys.HEAL_ON_BLOCK_ACTIVATION, value)

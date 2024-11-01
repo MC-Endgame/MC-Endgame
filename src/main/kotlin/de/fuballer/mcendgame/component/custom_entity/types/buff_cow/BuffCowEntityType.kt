@@ -7,6 +7,7 @@ import de.fuballer.mcendgame.component.custom_entity.ability.abilities.PullAbili
 import de.fuballer.mcendgame.component.custom_entity.ability.abilities.ShootSnowballsAbility
 import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
 import de.fuballer.mcendgame.util.random.RandomOption
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
 
 object BuffCowEntityType : CustomEntityType {
@@ -32,4 +33,7 @@ object BuffCowEntityType : CustomEntityType {
         RandomOption(25, ShootSnowballsAbility),
         RandomOption(25, PullAbility),
     )
+
+    override val spawnEgg = Material.COW_SPAWN_EGG
+    override val description = "Moo."
 }

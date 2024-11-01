@@ -8,6 +8,7 @@ import de.fuballer.mcendgame.component.custom_entity.ability.abilities.PoisonClo
 import de.fuballer.mcendgame.component.custom_entity.ability.abilities.SummonVinesAbility
 import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
 import de.fuballer.mcendgame.util.random.RandomOption
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
 
 object WendigoEntityType : CustomEntityType {
@@ -34,4 +35,7 @@ object WendigoEntityType : CustomEntityType {
         RandomOption(25, SummonVinesAbility),
         RandomOption(10, ApplyDarknessAbility),
     )
+
+    override val spawnEgg = Material.PILLAGER_SPAWN_EGG
+    override val description = "Melee attacks. Casts poison. Summons vines"
 }

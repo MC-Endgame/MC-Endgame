@@ -1,6 +1,7 @@
 package de.fuballer.mcendgame.component.custom_entity.types.zombie
 
 import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
 
 object ZombieEntityType : CustomEntityType {
@@ -22,4 +23,7 @@ object ZombieEntityType : CustomEntityType {
 
     override val sounds = null
     override val abilities = null
+
+    override val spawnEgg = Material.ZOMBIE_SPAWN_EGG
+    override val description = "Melee attacks."
 }

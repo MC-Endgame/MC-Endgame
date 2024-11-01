@@ -1,8 +1,9 @@
 package de.fuballer.mcendgame.technical.persistent_data
 
 import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
+import de.fuballer.mcendgame.component.device.DeviceType
+import de.fuballer.mcendgame.component.device.map_device.DeviceAction
 import de.fuballer.mcendgame.component.item.custom_item.CustomItemType
-import de.fuballer.mcendgame.component.map_device.MapDeviceAction
 import de.fuballer.mcendgame.technical.persistent_data.types.*
 import de.fuballer.mcendgame.technical.persistent_data.types.attribute.PersistentCustomAttribute
 import de.fuballer.mcendgame.technical.persistent_data.types.generic.PersistentEnum
@@ -34,7 +35,7 @@ object TypeKeys {
     val CUSTOM_ENTITY_ATTRIBUTES = TypeKey(createNamespacedKey("custom_entity_attributes"), PersistentList(PersistentCustomAttribute))
 
     // player
-    val LAST_MAP_DEVICE = TypeKey(createNamespacedKey("last_map_device"), PersistentUUID)
+    val LAST_DEVICE = TypeKey(createNamespacedKey("last_device"), PersistentUUID)
     val TOTEMS = TypeKey(createNamespacedKey("totems"), PersistentList(PersistentTotem))
     val HEAL_ON_BLOCK_ACTIVATION = TypeKey(createNamespacedKey("heal_on_block_activation"), PersistentDataType.LONG)
 
@@ -49,9 +50,10 @@ object TypeKeys {
     val ROLL_SHUFFLE_CRAFTING_ITEM = TypeKey(createNamespacedKey("roll_shuffle_crafting_item"), PersistentDataType.BOOLEAN)
     val DUPLICATION_CRAFTING_ITEM = TypeKey(createNamespacedKey("duplication_crafting_item"), PersistentDataType.BOOLEAN)
     val ROLL_RANDOMIZATION_CRAFTING_ITEM = TypeKey(createNamespacedKey("roll_randomization_crafting_item"), PersistentDataType.BOOLEAN)
-    val MAP_DEVICE = TypeKey(createNamespacedKey("map_device"), PersistentDataType.BOOLEAN)
-    val MAP_DEVICE_ACTION = TypeKey(createNamespacedKey("map_device_action"), PersistentEnum(MapDeviceAction::class))
+    val DEVICE = TypeKey(createNamespacedKey("device"), PersistentEnum(DeviceType::class))
+    val DEVICE_ACTION = TypeKey(createNamespacedKey("device_action"), PersistentEnum(DeviceAction::class))
     val TOTEM = TypeKey(createNamespacedKey("totem"), PersistentTotem)
+    val ALLY_ITEM = TypeKey(createNamespacedKey("ally_item"), PersistentDataType.BOOLEAN)
 
     class TypeKey<T>(
         val key: NamespacedKey,

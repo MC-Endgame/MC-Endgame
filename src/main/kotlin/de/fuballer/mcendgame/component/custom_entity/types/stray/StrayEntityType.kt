@@ -1,6 +1,7 @@
 package de.fuballer.mcendgame.component.custom_entity.types.stray
 
 import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
 
 object StrayEntityType : CustomEntityType {
@@ -22,4 +23,7 @@ object StrayEntityType : CustomEntityType {
 
     override val sounds = null
     override val abilities = null
+
+    override val spawnEgg = Material.STRAY_SPAWN_EGG
+    override val description = "Shoots arrows. Slows."
 }

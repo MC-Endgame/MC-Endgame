@@ -1,6 +1,7 @@
 package de.fuballer.mcendgame.component.custom_entity.types.vine
 
 import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
 
 object VineEntityType : CustomEntityType {
@@ -22,4 +23,7 @@ object VineEntityType : CustomEntityType {
 
     override val sounds = null
     override val abilities = null
+
+    override val spawnEgg = Material.ZOMBIE_HORSE_SPAWN_EGG
+    override val description = "Melee attacks. Immobile."
 }

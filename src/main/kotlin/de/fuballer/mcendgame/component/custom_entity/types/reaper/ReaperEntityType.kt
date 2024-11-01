@@ -8,6 +8,7 @@ import de.fuballer.mcendgame.component.custom_entity.ability.abilities.ClonesAbi
 import de.fuballer.mcendgame.component.custom_entity.ability.abilities.FlameBlastAbility
 import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
 import de.fuballer.mcendgame.util.random.RandomOption
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
 
 object ReaperEntityType : CustomEntityType {
@@ -34,4 +35,7 @@ object ReaperEntityType : CustomEntityType {
         RandomOption(25, ClonesAbility),
         RandomOption(10, ApplyDarknessAbility),
     )
+
+    override val spawnEgg = Material.WITHER_SKELETON_SPAWN_EGG
+    override val description = "Melee attacks. Flame spells. Summons weak clones."
 }

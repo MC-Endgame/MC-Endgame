@@ -8,6 +8,7 @@ import de.fuballer.mcendgame.component.custom_entity.ability.abilities.FlameBlas
 import de.fuballer.mcendgame.component.custom_entity.ability.abilities.SummonGravitationPillarAbility
 import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
 import de.fuballer.mcendgame.util.random.RandomOption
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
 
 object DemonicGolemEntityType : CustomEntityType {
@@ -34,4 +35,7 @@ object DemonicGolemEntityType : CustomEntityType {
         RandomOption(10, ApplyDarknessAbility),
         RandomOption(30, FlameBlastAbility),
     )
+
+    override val spawnEgg = Material.SILVERFISH_SPAWN_EGG
+    override val description = "Melee attacks. Fire/Gravity spells."
 }

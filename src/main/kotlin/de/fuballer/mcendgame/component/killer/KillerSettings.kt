@@ -16,5 +16,4 @@ object KillerSettings {
 
     val POTION_EFFECT_ITEM_NAME = ChatColor.BLUE.toString() + "Effect"
     val DEFAULT_SPAWN_EGG = Material.ALLAY_SPAWN_EGG
-    val BABY_LORE = listOf(ChatColor.BLUE.toString() + "Baby")
 }

@@ -8,6 +8,7 @@ import de.fuballer.mcendgame.component.custom_entity.ability.abilities.Knockback
 import de.fuballer.mcendgame.component.custom_entity.ability.abilities.SummonChupacabraAbility
 import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
 import de.fuballer.mcendgame.util.random.RandomOption
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
 
 object NecromancerEntityType : CustomEntityType {
@@ -34,4 +35,7 @@ object NecromancerEntityType : CustomEntityType {
         RandomOption(25, SummonChupacabraAbility),
         RandomOption(25, KnockbackAbility),
     )
+
+    override val spawnEgg = Material.EVOKER_SPAWN_EGG
+    override val description = "Ranged attacks. Summons minions."
 }

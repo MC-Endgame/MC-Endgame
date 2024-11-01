@@ -3,10 +3,10 @@ package de.fuballer.mcendgame.component.killer.db
 import de.fuballer.mcendgame.component.inventory.CustomInventoryType
 import de.fuballer.mcendgame.component.killer.KillerSettings
 import de.fuballer.mcendgame.util.InventoryUtil
+import de.fuballer.mcendgame.util.extension.EntityExtension.getCustomEntityType
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
-import org.bukkit.entity.Ageable
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.Inventory
@@ -55,12 +55,16 @@ class KillerEntity(
     }
 
     private fun getSpawnEgg(entity: LivingEntity): ItemStack {
-        val spawnEgg = ItemStack(KillerSettings.DEFAULT_SPAWN_EGG)
+        val customEntityType = entity.getCustomEntityType()
+        val spawnEgg = ItemStack(customEntityType?.spawnEgg ?: KillerSettings.DEFAULT_SPAWN_EGG)
 
         val meta = spawnEgg.itemMeta ?: return spawnEgg
         meta.setDisplayName(ChatColor.BLUE.toString() + (entity.customName ?: entity.name))
 
-        if (entity is Ageable && !entity.isAdult) meta.lore = KillerSettings.BABY_LORE
+        if (customEntityType != null) {
+            val lore = listOf(ChatColor.BLUE.toString() + customEntityType.description)
+            meta.lore = lore
+        }
 
         return spawnEgg.apply { itemMeta = meta }
     }

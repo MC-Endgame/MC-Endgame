@@ -1,6 +1,7 @@
 package de.fuballer.mcendgame.component.custom_entity.types.wither_skeleton
 
 import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
 
 object WitherSkeletonEntityType : CustomEntityType {
@@ -22,4 +23,7 @@ object WitherSkeletonEntityType : CustomEntityType {
 
     override val sounds = null
     override val abilities = null
+
+    override val spawnEgg = Material.WITHER_SKELETON_SPAWN_EGG
+    override val description = "Melee attacks. Inflicts wither."
 }

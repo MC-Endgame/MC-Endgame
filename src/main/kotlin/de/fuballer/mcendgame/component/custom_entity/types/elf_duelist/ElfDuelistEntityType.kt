@@ -5,6 +5,7 @@ import de.fuballer.mcendgame.component.custom_entity.ability.Ability
 import de.fuballer.mcendgame.component.custom_entity.ability.abilities.*
 import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
 import de.fuballer.mcendgame.util.random.RandomOption
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
 
 object ElfDuelistEntityType : CustomEntityType {
@@ -32,4 +33,7 @@ object ElfDuelistEntityType : CustomEntityType {
         RandomOption(5, StompAbility),
         RandomOption(5, ApplyDarknessAbility),
     )
+
+    override val spawnEgg = Material.VILLAGER_SPAWN_EGG
+    override val description = "Melee attacks. Mobile."
 }

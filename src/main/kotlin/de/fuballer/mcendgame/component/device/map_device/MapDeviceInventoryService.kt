@@ -1,53 +1,37 @@
-package de.fuballer.mcendgame.component.map_device
+package de.fuballer.mcendgame.component.device.map_device
 
+import de.fuballer.mcendgame.component.device.DeviceService
+import de.fuballer.mcendgame.component.device.DeviceSettings
+import de.fuballer.mcendgame.component.device.db.DeviceRepository
 import de.fuballer.mcendgame.component.dungeon.progress.PlayerDungeonProgressService
 import de.fuballer.mcendgame.component.dungeon.progress.PlayerDungeonProgressSettings
 import de.fuballer.mcendgame.component.inventory.CustomInventoryType
-import de.fuballer.mcendgame.component.map_device.db.MapDeviceEntity
-import de.fuballer.mcendgame.component.map_device.db.MapDeviceRepository
 import de.fuballer.mcendgame.framework.annotation.Service
 import de.fuballer.mcendgame.util.InventoryUtil
 import de.fuballer.mcendgame.util.extension.EventExtension.cancel
 import de.fuballer.mcendgame.util.extension.InventoryExtension.getCustomType
-import de.fuballer.mcendgame.util.extension.ItemStackExtension.getMapDeviceAction
-import de.fuballer.mcendgame.util.extension.PlayerExtension.getLastMapDevice
-import de.fuballer.mcendgame.util.extension.PlayerExtension.setLastMapDevice
+import de.fuballer.mcendgame.util.extension.ItemStackExtension.getDeviceAction
+import de.fuballer.mcendgame.util.extension.PlayerExtension.getLastDevice
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.block.Action
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryType
-import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 
 @Service
 class MapDeviceInventoryService(
-    private val mapDeviceRepo: MapDeviceRepository,
+    private val deviceRepo: DeviceRepository,
+    private val deviceService: DeviceService,
     private val mapDeviceService: MapDeviceService,
     private val playerDungeonProgressService: PlayerDungeonProgressService,
 ) : Listener {
-    @EventHandler
-    fun on(event: PlayerInteractEvent) {
-        if (event.action != Action.RIGHT_CLICK_BLOCK) return
-        val block = event.clickedBlock ?: return
-        if (block.type != Material.RESPAWN_ANCHOR) return
-        if (!block.hasMetadata(MapDeviceSettings.MAP_DEVICE_BLOCK_METADATA_KEY)) return
-
-        val player = event.player
-        val location = block.location
-
-        event.cancel()
-
-        val entity = mapDeviceRepo.findByLocation(location)
-            ?: MapDeviceEntity(location).apply { mapDeviceRepo.save(this) }
-
+    fun openInventory(player: Player) {
         val inventory = createMapDeviceInventory(player)
         player.openInventory(inventory)
-        player.setLastMapDevice(entity.id)
     }
 
     @EventHandler
@@ -62,15 +46,16 @@ class MapDeviceInventoryService(
         val clickedItem = inventory.getItem(clickedSlot) ?: return
 
         val player = event.whoClicked as Player
-        val lastMapDeviceId = player.getLastMapDevice() ?: return
-        val mapDevice = mapDeviceRepo.findById(lastMapDeviceId) ?: return
+        val lastDeviceId = player.getLastDevice() ?: return
+        val device = deviceRepo.findById(lastDeviceId) ?: return
 
-        val action = clickedItem.getMapDeviceAction() ?: return
+        val action = clickedItem.getDeviceAction() ?: return
         player.closeInventory()
 
         when (action) {
-            MapDeviceAction.OPEN -> mapDeviceService.openDungeon(mapDevice, player)
-            MapDeviceAction.CLOSE -> mapDeviceService.closeDungeon(mapDevice)
+            DeviceAction.OPEN -> mapDeviceService.openDungeon(device, player)
+            DeviceAction.CLOSE -> deviceService.closeRemainingPortals(device)
+            else -> return
         }
     }
 
@@ -81,11 +66,11 @@ class MapDeviceInventoryService(
             CustomInventoryType.MAP_DEVICE
         )
 
-        inventory.setItem(0, MapDeviceSettings.OPEN_PORTALS_ITEM)
-        inventory.setItem(1, MapDeviceSettings.FILLER_ITEM)
+        inventory.setItem(0, DeviceSettings.OPEN_PORTALS_ITEM)
+        inventory.setItem(1, DeviceSettings.FILLER_ITEM)
         inventory.setItem(2, getDungeonTierDisplayItem(player))
-        inventory.setItem(3, MapDeviceSettings.FILLER_ITEM)
-        inventory.setItem(4, MapDeviceSettings.CLOSE_PORTALS_ITEM)
+        inventory.setItem(3, DeviceSettings.FILLER_ITEM)
+        inventory.setItem(4, DeviceSettings.CLOSE_PORTALS_ITEM)
 
         return inventory
     }

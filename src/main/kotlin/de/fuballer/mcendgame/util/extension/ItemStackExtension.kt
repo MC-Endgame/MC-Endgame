@@ -1,8 +1,9 @@
 package de.fuballer.mcendgame.util.extension
 
+import de.fuballer.mcendgame.component.device.DeviceType
+import de.fuballer.mcendgame.component.device.map_device.DeviceAction
 import de.fuballer.mcendgame.component.item.attribute.data.CustomAttribute
 import de.fuballer.mcendgame.component.item.custom_item.CustomItemType
-import de.fuballer.mcendgame.component.map_device.MapDeviceAction
 import de.fuballer.mcendgame.component.totem.data.Totem
 import de.fuballer.mcendgame.technical.persistent_data.TypeKeys
 import de.fuballer.mcendgame.util.PersistentDataUtil
@@ -31,12 +32,14 @@ object ItemStackExtension {
     fun ItemStack.isRollRandomizationCraftingItem() = getPersistentDataBoolean(this, TypeKeys.ROLL_RANDOMIZATION_CRAFTING_ITEM)
     fun ItemStack.setCraftingItem(value: Boolean = true) = setPersistentData(this, TypeKeys.CRAFTING_ITEM, value)
     fun ItemStack.isCraftingItem() = getPersistentDataBoolean(this, TypeKeys.CRAFTING_ITEM)
-    fun ItemStack.setMapDevice(value: Boolean = true) = setPersistentData(this, TypeKeys.MAP_DEVICE, value)
-    fun ItemStack.isMapDevice() = getPersistentDataBoolean(this, TypeKeys.MAP_DEVICE)
-    fun ItemStack.setMapDeviceAction(value: MapDeviceAction) = setPersistentData(this, TypeKeys.MAP_DEVICE_ACTION, value)
-    fun ItemStack.getMapDeviceAction() = getPersistentData(this, TypeKeys.MAP_DEVICE_ACTION)
+    fun ItemStack.setDeviceType(value: DeviceType) = setPersistentData(this, TypeKeys.DEVICE, value)
+    fun ItemStack.getDeviceType() = getPersistentData(this, TypeKeys.DEVICE)
+    fun ItemStack.setDeviceAction(value: DeviceAction) = setPersistentData(this, TypeKeys.DEVICE_ACTION, value)
+    fun ItemStack.getDeviceAction() = getPersistentData(this, TypeKeys.DEVICE_ACTION)
     fun ItemStack.setTotem(value: Totem) = setPersistentData(this, TypeKeys.TOTEM, value)
     fun ItemStack.getTotem() = getPersistentData(this, TypeKeys.TOTEM)
+    fun ItemStack.setAllyItem(value: Boolean = true) = setPersistentData(this, TypeKeys.ALLY_ITEM, value)
+    fun ItemStack.isAllyItem() = getPersistentDataBoolean(this, TypeKeys.ALLY_ITEM)
 
     private fun <T : Any> setPersistentData(item: ItemStack, key: TypeKeys.TypeKey<T>, value: T) {
         val itemMeta = item.itemMeta!!

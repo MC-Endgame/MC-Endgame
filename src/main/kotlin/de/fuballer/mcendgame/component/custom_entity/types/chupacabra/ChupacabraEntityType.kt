@@ -1,6 +1,7 @@
 package de.fuballer.mcendgame.component.custom_entity.types.chupacabra
 
 import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
 
 object ChupacabraEntityType : CustomEntityType {
@@ -22,4 +23,8 @@ object ChupacabraEntityType : CustomEntityType {
 
     override val sounds = null
     override val abilities = null
+
+
+    override val spawnEgg = Material.WOLF_SPAWN_EGG
+    override val description = "Pounce attacks."
 }

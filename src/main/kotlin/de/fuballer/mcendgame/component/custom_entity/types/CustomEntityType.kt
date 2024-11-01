@@ -3,6 +3,7 @@ package de.fuballer.mcendgame.component.custom_entity.types
 import de.fuballer.mcendgame.component.custom_entity.EntitySoundData
 import de.fuballer.mcendgame.component.custom_entity.ability.Ability
 import de.fuballer.mcendgame.util.random.RandomOption
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
 
 interface CustomEntityType {
@@ -24,4 +25,7 @@ interface CustomEntityType {
 
     val sounds: EntitySoundData?
     val abilities: List<RandomOption<Ability>>?
+
+    val spawnEgg: Material
+    val description: String
 }

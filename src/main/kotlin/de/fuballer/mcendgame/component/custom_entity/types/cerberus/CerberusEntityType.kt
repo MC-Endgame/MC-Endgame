@@ -8,6 +8,7 @@ import de.fuballer.mcendgame.component.custom_entity.ability.abilities.FlameBlas
 import de.fuballer.mcendgame.component.custom_entity.ability.abilities.KnockbackAbility
 import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
 import de.fuballer.mcendgame.util.random.RandomOption
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
 
 object CerberusEntityType : CustomEntityType {
@@ -34,4 +35,7 @@ object CerberusEntityType : CustomEntityType {
         RandomOption(15, ApplyDarknessAbility),
         RandomOption(35, FlameBlastAbility),
     )
+
+    override val spawnEgg = Material.MAGMA_CUBE_SPAWN_EGG
+    override val description = "Melee attacks. Fire spells."
 }

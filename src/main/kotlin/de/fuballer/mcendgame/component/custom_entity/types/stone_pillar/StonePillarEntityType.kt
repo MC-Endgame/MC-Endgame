@@ -1,6 +1,7 @@
 package de.fuballer.mcendgame.component.custom_entity.types.stone_pillar
 
 import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
 
 object StonePillarEntityType : CustomEntityType {
@@ -22,4 +23,7 @@ object StonePillarEntityType : CustomEntityType {
 
     override val sounds = null
     override val abilities = null
+
+    override val spawnEgg = Material.SILVERFISH_SPAWN_EGG
+    override val description = "Applies gravity."
 }

@@ -1,4 +1,4 @@
-package de.fuballer.mcendgame.component.dungeon.world.db
+package de.fuballer.mcendgame.component.world.db
 
 import de.fuballer.mcendgame.framework.InMemoryMapRepository
 import de.fuballer.mcendgame.framework.annotation.Service

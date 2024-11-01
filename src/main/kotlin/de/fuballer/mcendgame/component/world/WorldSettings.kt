@@ -1,4 +1,4 @@
-package de.fuballer.mcendgame.component.dungeon.world
+package de.fuballer.mcendgame.component.world
 
 import org.bukkit.Difficulty
 import org.bukkit.GameRule

@@ -3,8 +3,9 @@ package de.fuballer.mcendgame.component.dungeon.boss
 import de.fuballer.mcendgame.component.dungeon.boss.db.DungeonBossesRepository
 import de.fuballer.mcendgame.component.dungeon.enemy.EnemyHealingService.Companion.healOnLoad
 import de.fuballer.mcendgame.component.dungeon.modifier.ModifierUtil.addModifier
-import de.fuballer.mcendgame.component.dungeon.world.db.ManagedWorldRepository
 import de.fuballer.mcendgame.component.portal.PortalService
+import de.fuballer.mcendgame.component.world.db.ManagedWorldRepository
+import de.fuballer.mcendgame.component.world.db.dungeon.ManagedDungeonWorldEntity
 import de.fuballer.mcendgame.event.DungeonCompleteEvent
 import de.fuballer.mcendgame.event.DungeonEntityDeathEvent
 import de.fuballer.mcendgame.event.EventGateway
@@ -33,7 +34,7 @@ class DungeonBossService(
 
         val bossWorld = entity.world
         val bossesEntity = dungeonBossesRepo.findByWorld(bossWorld) ?: return
-        val dungeonWorld = worldManageRepo.getById(bossWorld.name)
+        val dungeonWorld = worldManageRepo.getById(bossWorld.name) as ManagedDungeonWorldEntity
 
         val portalLocation = entity.getPortalLocation()!!
         portalLocation.world = entity.world

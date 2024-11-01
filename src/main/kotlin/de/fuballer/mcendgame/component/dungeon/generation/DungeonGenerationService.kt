@@ -4,9 +4,9 @@ import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
 import de.fuballer.mcendgame.component.dungeon.boss.DungeonBossGenerationService
 import de.fuballer.mcendgame.component.dungeon.enemy.generation.EnemyGenerationService
 import de.fuballer.mcendgame.component.dungeon.generation.data.Layout
+import de.fuballer.mcendgame.component.dungeon.generation.world.DungeonWorldService
 import de.fuballer.mcendgame.component.dungeon.seed.DungeonSeedService
 import de.fuballer.mcendgame.component.dungeon.type.DungeonTypeService
-import de.fuballer.mcendgame.component.dungeon.world.ManagedWorldService
 import de.fuballer.mcendgame.component.portal.PortalService
 import de.fuballer.mcendgame.event.DungeonGeneratedEvent
 import de.fuballer.mcendgame.event.EventGateway
@@ -20,7 +20,7 @@ import kotlin.random.Random
 
 @Service
 class DungeonGenerationService(
-    private val managedWorldService: ManagedWorldService,
+    private val dungeonWorldService: DungeonWorldService,
     private val dungeonBuilderService: DungeonBuilderService,
     private val dungeonTypeService: DungeonTypeService,
     private val enemyGenerationService: EnemyGenerationService,
@@ -34,7 +34,7 @@ class DungeonGenerationService(
         leaveLocation: Location
     ): Location {
         val seed = dungeonSeedService.getSeed(player)
-        val world = managedWorldService.createWorld(player, seed)
+        val world = dungeonWorldService.createDungeonWorld(player, seed)
         val random = Random(world.seed)
         val dungeonType = dungeonTypeService.getNextDungeonType(player)
         val (mapType, entityTypes, bossEntityTypes) = dungeonType.roll(random)

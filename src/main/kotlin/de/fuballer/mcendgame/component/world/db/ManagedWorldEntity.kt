@@ -1,13 +1,11 @@
-package de.fuballer.mcendgame.component.dungeon.world.db
+package de.fuballer.mcendgame.component.world.db
 
 import de.fuballer.mcendgame.framework.stereotype.Entity
 import org.bukkit.World
-import org.bukkit.entity.Player
 
-data class ManagedWorldEntity(
+open class ManagedWorldEntity(
     override var id: String,
 
-    var player: Player,
     var world: World,
     var deleteTimer: Int = 0
 ) : Entity<String>

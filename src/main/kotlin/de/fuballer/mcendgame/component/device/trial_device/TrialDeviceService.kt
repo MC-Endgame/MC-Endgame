@@ -2,6 +2,7 @@ package de.fuballer.mcendgame.component.device.trial_device
 
 import de.fuballer.mcendgame.component.device.DeviceService
 import de.fuballer.mcendgame.component.device.db.DeviceEntity
+import de.fuballer.mcendgame.component.trial.generation.TrialGenerationService
 import de.fuballer.mcendgame.framework.annotation.Service
 import de.fuballer.mcendgame.util.ThreadUtil.async
 import org.bukkit.event.Listener
@@ -11,6 +12,7 @@ import kotlin.time.measureTime
 @Service
 class TrialDeviceService(
     private val deviceService: DeviceService,
+    private val trialGenerationService: TrialGenerationService,
     private val logger: Logger,
 ) : Listener {
     fun openTrial(
@@ -18,7 +20,7 @@ class TrialDeviceService(
     ) = async {
         val time = measureTime {
             val leaveLocation = device.location.clone().add(0.5, 1.0, 0.5)
-            val startLocation = leaveLocation.clone() //TODO get from trial generation
+            val startLocation = trialGenerationService.generateTrial(leaveLocation)
 
             //val dungeonOpenEvent = DungeonOpenEvent(player, startLocation.world!!)
             //EventGateway.apply(dungeonOpenEvent)

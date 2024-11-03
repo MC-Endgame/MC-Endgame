@@ -4,7 +4,7 @@ import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
 import de.fuballer.mcendgame.framework.annotation.Service
 import de.fuballer.mcendgame.util.TextComponent
 import de.fuballer.mcendgame.util.extension.EntityExtension.getCustomEntityType
-import de.fuballer.mcendgame.util.extension.ItemStackExtension.setAllyItem
+import de.fuballer.mcendgame.util.extension.ItemStackExtension.setCustomEntityType
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -35,7 +35,7 @@ class TrialAllyService(
         itemMeta.lore(lore)
 
         item.itemMeta = itemMeta
-        item.setAllyItem()
+        item.setCustomEntityType(customEntityType)
         return item
     }
 }

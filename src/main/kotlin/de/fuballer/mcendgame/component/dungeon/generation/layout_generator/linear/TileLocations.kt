@@ -6,6 +6,7 @@ import org.bukkit.util.Vector
 data class TileLocations(
     val startLocation: Vector?,
     val doors: List<Door>,
-    val spawnLocations: List<SpawnLocation>,
-    val bossSpawnLocations: List<SpawnLocation>
+    val enemySpawnLocations: List<SpawnLocation>,
+    val bossSpawnLocations: List<SpawnLocation>,
+    val allySpawnLocations: List<SpawnLocation>
 )

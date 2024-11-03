@@ -2,6 +2,7 @@ package de.fuballer.mcendgame
 
 import com.comphenix.protocol.ProtocolLibrary
 import de.fuballer.mcendgame.component.dungeon.generation.layout_generator.linear.RoomTypes
+import de.fuballer.mcendgame.component.trial.generation.TrialRooms
 import de.fuballer.mcendgame.configuration.PluginConfiguration
 import de.fuballer.mcendgame.framework.DependencyInjector
 import de.fuballer.mcendgame.framework.stereotype.LifeCycleListener
@@ -32,6 +33,7 @@ class MCEndgame : JavaPlugin() {
                 .onEach { it.initialize(this) }
 
             RoomTypes.init() // load schematics of the dungeon maps
+            TrialRooms.init() // load schematics of trials
         }
 
         logger.info("Enabled $name in ${time.inWholeMilliseconds} ms")

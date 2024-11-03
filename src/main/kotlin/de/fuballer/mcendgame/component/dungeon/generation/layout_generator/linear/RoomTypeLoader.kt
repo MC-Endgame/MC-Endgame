@@ -15,6 +15,7 @@ private val DOOR_MARKER_BLOCK = BlockTypes.BLACK_WOOL!!.id()
 private val MONSTER_MARKER_BLOCK = BlockTypes.WHITE_WOOL!!.id()
 private val BOSS_MARKER_BLOCK = BlockTypes.DRAGON_HEAD!!.id()
 private val START_PORTAL_MARKER_BLOCK = BlockTypes.GREEN_WOOL!!.id()
+private val ALLY_MARKER_BLOCK = BlockTypes.LIME_WOOL!!.id()
 
 object RoomTypeLoader {
     fun load(schematicPath: String): RoomType {
@@ -40,16 +41,18 @@ object RoomTypeLoader {
             VectorUtil.fromBlockVector3(size),
             locations.startLocation?.let { SpawnLocation(it, -90.0) },
             locations.doors,
-            locations.spawnLocations,
-            locations.bossSpawnLocations
+            locations.enemySpawnLocations,
+            locations.bossSpawnLocations,
+            locations.allySpawnLocations
         )
     }
 
     private fun findMarkedLocations(clipboard: Clipboard, size: BlockVector3): TileLocations {
         var startLocation: Vector? = null
         val doors = mutableListOf<Door>()
-        val spawnLocations = mutableListOf<SpawnLocation>()
+        val enemySpawnLocations = mutableListOf<SpawnLocation>()
         val bossSpawnLocations = mutableListOf<SpawnLocation>()
+        val allySpawnLocations = mutableListOf<SpawnLocation>()
 
         for (x in 0..size.x()) {
             for (y in 0..size.y()) {
@@ -76,7 +79,7 @@ object RoomTypeLoader {
                         MONSTER_MARKER_BLOCK -> {
                             val centeredBlockPosition = Vector(x + 0.5, y + 0.0, z + 0.5)
                             val spawnLocation = SpawnLocation(centeredBlockPosition)
-                            spawnLocations.add(spawnLocation)
+                            enemySpawnLocations.add(spawnLocation)
 
                             replaceBlockWithAir(position, clipboard)
                         }
@@ -93,12 +96,20 @@ object RoomTypeLoader {
 
                             replaceBlockWithAir(position, clipboard)
                         }
+
+                        ALLY_MARKER_BLOCK -> {
+                            val centeredBlockPosition = Vector(x + 0.5, y + 0.0, z + 0.5)
+                            val spawnLocation = SpawnLocation(centeredBlockPosition)
+                            allySpawnLocations.add(spawnLocation)
+
+                            replaceBlockWithAir(position, clipboard)
+                        }
                     }
                 }
             }
         }
 
-        return TileLocations(startLocation, doors, spawnLocations, bossSpawnLocations)
+        return TileLocations(startLocation, doors, enemySpawnLocations, bossSpawnLocations, allySpawnLocations)
     }
 
     private fun getDoor(x: Int, y: Int, z: Int, size: BlockVector3) =

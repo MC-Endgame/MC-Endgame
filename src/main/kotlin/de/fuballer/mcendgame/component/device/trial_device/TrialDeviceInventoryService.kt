@@ -6,7 +6,7 @@ import de.fuballer.mcendgame.component.device.db.DeviceRepository
 import de.fuballer.mcendgame.component.device.map_device.DeviceAction
 import de.fuballer.mcendgame.component.device.trial_device.trial_party_inventory.TrialPartyInventoryService
 import de.fuballer.mcendgame.component.inventory.CustomInventoryType
-import de.fuballer.mcendgame.component.trial.db.TrialPartyRepository
+import de.fuballer.mcendgame.component.trial.db.party.TrialPartyRepository
 import de.fuballer.mcendgame.framework.annotation.Service
 import de.fuballer.mcendgame.util.InventoryUtil
 import de.fuballer.mcendgame.util.extension.EventExtension.cancel

@@ -1,7 +1,7 @@
 package de.fuballer.mcendgame.component.device.trial_device.trial_party_inventory
 
 import de.fuballer.mcendgame.component.trial.TrialAllySettings
-import de.fuballer.mcendgame.util.extension.ItemStackExtension.isAllyItem
+import de.fuballer.mcendgame.util.extension.ItemStackExtension.getCustomEntityType
 import org.bukkit.inventory.ItemStack
 
 enum class TrialPartyInventorySlotType(
@@ -9,7 +9,7 @@ enum class TrialPartyInventorySlotType(
     val isValid: (item: ItemStack) -> Boolean,
 ) {
     TYPE_ITEM(0, {
-        it.isAllyItem()
+        it.getCustomEntityType() != null
     }),
     MAIN_HAND(2, {
         TrialAllySettings.VALID_HAND_ITEMS.contains(it.type)

@@ -45,6 +45,12 @@ object EntityExtension {
 
     fun Entity.isEnemy() = PersistentDataUtil.getBooleanValue(this, TypeKeys.IS_ENEMY)
 
+    fun Entity.setIsAlly(value: Boolean = true) {
+        PersistentDataUtil.setValue(this, TypeKeys.IS_ALLY, value)
+    }
+
+    fun Entity.isAlly() = PersistentDataUtil.getBooleanValue(this, TypeKeys.IS_ALLY)
+
     fun Entity.setIsLootGoblin(value: Boolean = true) {
         PersistentDataUtil.setValue(this, TypeKeys.IS_LOOT_GOBLIN, value)
     }

@@ -10,8 +10,9 @@ data class RoomType(
     val size: Vector, // 8 blocks (inclusive) -> 7 size
     val startLocation: SpawnLocation?,
     val doors: List<Door>,
-    val spawnLocations: List<SpawnLocation>,
-    val bossSpawnLocations: List<SpawnLocation>
+    val enemySpawnLocations: List<SpawnLocation>,
+    val bossSpawnLocations: List<SpawnLocation>,
+    val allySpawnLocations: List<SpawnLocation>,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -27,5 +28,5 @@ data class RoomType(
     }
 
     fun isLinear() = doors.size == 2
-    fun getComplexity() = spawnLocations.size + 1
+    fun getComplexity() = enemySpawnLocations.size + 1
 }

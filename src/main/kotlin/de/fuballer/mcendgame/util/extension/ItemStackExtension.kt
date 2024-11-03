@@ -1,5 +1,6 @@
 package de.fuballer.mcendgame.util.extension
 
+import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
 import de.fuballer.mcendgame.component.device.DeviceType
 import de.fuballer.mcendgame.component.device.map_device.DeviceAction
 import de.fuballer.mcendgame.component.item.attribute.data.CustomAttribute
@@ -38,8 +39,8 @@ object ItemStackExtension {
     fun ItemStack.getDeviceAction() = getPersistentData(this, TypeKeys.DEVICE_ACTION)
     fun ItemStack.setTotem(value: Totem) = setPersistentData(this, TypeKeys.TOTEM, value)
     fun ItemStack.getTotem() = getPersistentData(this, TypeKeys.TOTEM)
-    fun ItemStack.setAllyItem(value: Boolean = true) = setPersistentData(this, TypeKeys.ALLY_ITEM, value)
-    fun ItemStack.isAllyItem() = getPersistentDataBoolean(this, TypeKeys.ALLY_ITEM)
+    fun ItemStack.setCustomEntityType(value: CustomEntityType) = setPersistentData(this, TypeKeys.CUSTOM_ENTITY_TYPE, value)
+    fun ItemStack.getCustomEntityType() = getPersistentData(this, TypeKeys.CUSTOM_ENTITY_TYPE)
 
     private fun <T : Any> setPersistentData(item: ItemStack, key: TypeKeys.TypeKey<T>, value: T) {
         val itemMeta = item.itemMeta!!

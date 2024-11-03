@@ -1,4 +1,4 @@
-package de.fuballer.mcendgame.component.trial.db
+package de.fuballer.mcendgame.component.trial.db.party
 
 import de.fuballer.mcendgame.framework.stereotype.Entity
 import java.util.*

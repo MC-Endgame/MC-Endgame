@@ -1,6 +1,7 @@
 package de.fuballer.mcendgame.util
 
 import de.fuballer.mcendgame.configuration.PluginConfiguration
+import org.bukkit.scheduler.BukkitRunnable
 import java.util.concurrent.Callable
 import java.util.concurrent.Future
 
@@ -79,4 +80,18 @@ object SchedulingUtil {
      * @return Future object related to the task
     </T> */
     fun <T> callSyncMethod(task: Callable<T>): Future<T> = PluginConfiguration.scheduler().callSyncMethod(PluginConfiguration.plugin(), task)
+
+    fun scheduleSyncRepeatingTask(delay: Long, period: Long, times: Int, task: Runnable) {
+        object : BukkitRunnable() {
+            var repeat = 0
+
+            override fun run() {
+                task.run()
+                repeat++
+                if (repeat >= times) {
+                    cancel()
+                }
+            }
+        }.runTaskTimer(PluginConfiguration.plugin(), delay, period)
+    }
 }

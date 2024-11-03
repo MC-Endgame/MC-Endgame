@@ -1,4 +1,4 @@
-package de.fuballer.mcendgame.component.trial.db
+package de.fuballer.mcendgame.component.trial.db.party
 
 import de.fuballer.mcendgame.component.device.trial_device.trial_party_inventory.TrialPartyInventorySlotType
 import org.bukkit.Material

@@ -4,9 +4,9 @@ import de.fuballer.mcendgame.component.device.DeviceSettings
 import de.fuballer.mcendgame.component.device.trial_device.TrialDeviceSettings
 import de.fuballer.mcendgame.component.inventory.CustomInventoryType
 import de.fuballer.mcendgame.component.trial.TrialAllySettings
-import de.fuballer.mcendgame.component.trial.db.TrialAllyEntity
-import de.fuballer.mcendgame.component.trial.db.TrialPartyEntity
-import de.fuballer.mcendgame.component.trial.db.TrialPartyRepository
+import de.fuballer.mcendgame.component.trial.db.party.TrialAllyEntity
+import de.fuballer.mcendgame.component.trial.db.party.TrialPartyEntity
+import de.fuballer.mcendgame.component.trial.db.party.TrialPartyRepository
 import de.fuballer.mcendgame.framework.annotation.Service
 import de.fuballer.mcendgame.util.InventoryUtil
 import de.fuballer.mcendgame.util.SchedulingUtil
@@ -24,7 +24,7 @@ import org.bukkit.inventory.ItemStack
 
 @Service
 class TrialPartyInventoryService(
-    private val trialPartyRepository: TrialPartyRepository,
+    private val trialPartyRepo: TrialPartyRepository,
 ) : Listener {
     fun openPartyInventory(player: Player) {
         val inventory = createPartyInventory(player)
@@ -125,7 +125,7 @@ class TrialPartyInventoryService(
         }
 
         val party = TrialPartyEntity(player.uniqueId, allies)
-        trialPartyRepository.save(party)
+        trialPartyRepo.save(party)
     }
 
     private fun createPartyInventory(player: Player): Inventory {
@@ -145,7 +145,7 @@ class TrialPartyInventoryService(
             inventory.setItem(slot, DeviceSettings.FILLER_ITEM)
         }
 
-        val partyEntity = trialPartyRepository.findById(player.uniqueId) ?: return
+        val partyEntity = trialPartyRepo.findById(player.uniqueId) ?: return
 
         for (orderedAlly in partyEntity.allies) {
             val rowStartIndex = orderedAlly.key * 9

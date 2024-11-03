@@ -282,7 +282,7 @@ class LinearLayoutGenerator(
         val quarterRotations = (rotation / 90).toInt()
         val rotationRad = Math.toRadians(rotation)
 
-        chosenRoom.spawnLocations.onEach {
+        chosenRoom.enemySpawnLocations.onEach {
             val newLocation = rotateSpawnLocation(it, rotationRad, offsetRoomOrigin, quarterRotations)
 
             spawnLocations.add(SpawnLocation(newLocation))

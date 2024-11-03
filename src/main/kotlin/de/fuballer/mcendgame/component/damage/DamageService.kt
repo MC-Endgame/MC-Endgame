@@ -6,6 +6,7 @@ import de.fuballer.mcendgame.util.EntityUtil
 import de.fuballer.mcendgame.util.extension.EventExtension.cancel
 import de.fuballer.mcendgame.util.extension.LivingEntityExtension.getCustomAttributes
 import de.fuballer.mcendgame.util.extension.WorldExtension.isDungeonWorld
+import de.fuballer.mcendgame.util.extension.WorldExtension.isTrialWorld
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.EventHandler
@@ -58,11 +59,12 @@ class DamageService : Listener {
         val cause = event.cause
         val world = event.damager.world
         val isDungeonWorld = world.isDungeonWorld()
+        val isTrialWorld = world.isTrialWorld()
 
         val isDamageBlocked = event.getDamage(DamageModifier.BLOCKING) < 0
         val isCritical = DamageUtil.isCritical(event.cause, event.damager)
 
-        return DamageCalculationEvent(event, damager, damagerAttributes, damaged, damagedAttributes, cause, world, isDungeonWorld, isDamageBlocked, isCritical)
+        return DamageCalculationEvent(event, damager, damagerAttributes, damaged, damagedAttributes, cause, world, isDungeonWorld, isTrialWorld, isDamageBlocked, isCritical)
     }
 
     private fun updateOriginalEvent(originalEvent: EntityDamageByEntityEvent, damageEvent: DamageCalculationEvent) {

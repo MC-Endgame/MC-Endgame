@@ -3,6 +3,7 @@ package de.fuballer.mcendgame.component.trial.db.instance
 import de.fuballer.mcendgame.component.dungeon.generation.data.SpawnLocation
 import de.fuballer.mcendgame.framework.stereotype.Entity
 import org.bukkit.World
+import org.bukkit.block.Block
 import java.util.*
 
 data class TrialInstanceEntity(
@@ -13,6 +14,8 @@ data class TrialInstanceEntity(
     var progress: Int,
     var allySpawnLocations: List<SpawnLocation>,
     var enemySpawnLocations: List<SpawnLocation>,
+
+    var spawner: Block? = null,
 
     var waveActive: Boolean = false
 ) : Entity<UUID> {

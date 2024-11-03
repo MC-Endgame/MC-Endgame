@@ -24,6 +24,7 @@ class DamageCalculationEvent(
     val cause: DamageCause,
     val world: World,
     val isDungeonWorld: Boolean,
+    val isTrialWorld: Boolean,
     val isDamageBlocked: Boolean,
     val isDamageCritical: Boolean,
 

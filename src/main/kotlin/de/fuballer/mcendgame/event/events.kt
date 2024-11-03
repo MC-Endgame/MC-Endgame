@@ -4,6 +4,7 @@ import de.fuballer.mcendgame.component.portal.db.Portal
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
 import org.bukkit.World
+import org.bukkit.entity.Creature
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -126,6 +127,16 @@ class DungeonGeneratedEvent(
     val seed: Long,
     val respawnLocation: Location,
     val tier: Int
+) : HandleableEvent()
+
+/**
+ * Thrown whenever a trial wave gets spawned
+ */
+class TrialWaveSpawnedEvent(
+    val world: World,
+    val players: List<Player>,
+    val allies: List<Creature>,
+    val enemies: List<Creature>,
 ) : HandleableEvent()
 
 /**

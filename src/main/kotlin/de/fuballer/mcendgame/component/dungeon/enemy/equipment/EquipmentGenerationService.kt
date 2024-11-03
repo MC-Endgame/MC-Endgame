@@ -25,7 +25,7 @@ class EquipmentGenerationService(
         weapons: Boolean,
         ranged: Boolean,
         armor: Boolean,
-        isLootGoblin: Boolean
+        isLootGoblin: Boolean = false
     ) {
         val equipment = livingEntity.equipment!!
 

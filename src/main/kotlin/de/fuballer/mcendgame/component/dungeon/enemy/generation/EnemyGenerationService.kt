@@ -89,7 +89,7 @@ class EnemyGenerationService(
         scaleAttribute?.baseValue = scale
     }
 
-    private fun addEffectsToEnemy(
+    fun addEffectsToEnemy(
         random: Random,
         entity: LivingEntity,
         mapTier: Int,

@@ -1,18 +1,19 @@
 package de.fuballer.mcendgame.component.device.trial_device.trial_party_inventory
 
 import de.fuballer.mcendgame.component.device.DeviceSettings
-import de.fuballer.mcendgame.component.device.trial_device.TrialDeviceSettings
 import de.fuballer.mcendgame.component.inventory.CustomInventoryType
 import de.fuballer.mcendgame.component.trial.TrialAllySettings
 import de.fuballer.mcendgame.component.trial.db.party.TrialAllyEntity
 import de.fuballer.mcendgame.component.trial.db.party.TrialPartyEntity
 import de.fuballer.mcendgame.component.trial.db.party.TrialPartyRepository
+import de.fuballer.mcendgame.component.trial.db.unlocks.TrialUnlockedAllyTypesEntity
+import de.fuballer.mcendgame.component.trial.db.unlocks.TrialUnlockedAllyTypesRepository
 import de.fuballer.mcendgame.framework.annotation.Service
 import de.fuballer.mcendgame.util.InventoryUtil
 import de.fuballer.mcendgame.util.SchedulingUtil
 import de.fuballer.mcendgame.util.extension.EventExtension.cancel
 import de.fuballer.mcendgame.util.extension.InventoryExtension.getCustomType
-import org.bukkit.Material
+import de.fuballer.mcendgame.util.extension.ItemStackExtension.getCustomEntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -25,6 +26,9 @@ import org.bukkit.inventory.ItemStack
 @Service
 class TrialPartyInventoryService(
     private val trialPartyRepo: TrialPartyRepository,
+    private val trialUnlockedAllyTypesRepo: TrialUnlockedAllyTypesRepository,
+    private val trialPartyAllyTypeSelectionInventoryService: TrialPartyAllyTypeSelectionInventoryService,
+    private val trialAllyTypeItemService: TrialAllyTypeItemService,
 ) : Listener {
     fun openPartyInventory(player: Player) {
         val inventory = createPartyInventory(player)
@@ -76,6 +80,12 @@ class TrialPartyInventoryService(
         val item = event.currentItem
         if (item == DeviceSettings.FILLER_ITEM) return
 
+        if (event.rawSlot % 9 == TrialPartyInventorySlotType.TYPE_ITEM.slot) {
+            val player = event.whoClicked as? Player ?: return
+            trialPartyAllyTypeSelectionInventoryService.openAllyTypeSelectionInventory(player, event.rawSlot / 9, this)
+            return
+        }
+
         event.whoClicked.setItemOnCursor(item)
         event.inventory.setItem(event.rawSlot, DeviceSettings.FILLER_ITEM)
 
@@ -120,8 +130,8 @@ class TrialPartyInventoryService(
             ally.gear = gear
 
             val typeItem = inventory.getItem(rowStartIndex) ?: continue
-            if (!TrialPartyInventorySlotType.TYPE_ITEM.isValid(typeItem)) continue
-            ally.typeItem = typeItem
+            val allyType = typeItem.getCustomEntityType() ?: continue
+            ally.type = allyType
         }
 
         val party = TrialPartyEntity(player.uniqueId, allies)
@@ -131,7 +141,7 @@ class TrialPartyInventoryService(
     private fun createPartyInventory(player: Player): Inventory {
         val inventory = InventoryUtil.createInventory(
             TrialPartyInventorySettings.INVENTORY_SIZE,
-            TrialDeviceSettings.TRIAL_PARTY_INVENTORY_TITLE,
+            TrialPartyInventorySettings.INVENTORY_TITLE,
             CustomInventoryType.TRIAL_PARTY
         )
 
@@ -141,11 +151,29 @@ class TrialPartyInventoryService(
     }
 
     private fun fillPartyInventory(inventory: Inventory, player: Player) {
+        fillPartyInventoryFillers(inventory)
+        fillPartyInventoryAllies(inventory, player)
+    }
+
+    private fun fillPartyInventoryFillers(inventory: Inventory) {
         for (slot in 0 until TrialPartyInventorySettings.INVENTORY_SIZE) {
+            if (slot % 9 == TrialPartyInventorySlotType.TYPE_ITEM.slot) {
+                inventory.setItem(slot, TrialPartyInventorySettings.TYPE_FILLER_ITEM)
+                continue
+            }
             inventory.setItem(slot, DeviceSettings.FILLER_ITEM)
         }
+    }
 
-        val partyEntity = trialPartyRepo.findById(player.uniqueId) ?: return
+    private fun fillPartyInventoryAllies(inventory: Inventory, player: Player) {
+        val unlockedAllyTypesEntity = trialUnlockedAllyTypesRepo.findById(player.uniqueId)
+            ?: TrialUnlockedAllyTypesEntity(player.uniqueId, mutableMapOf())
+        trialUnlockedAllyTypesRepo.save(unlockedAllyTypesEntity)
+        val unlockedAllyTypes = unlockedAllyTypesEntity.unlockedTypes
+
+        val partyEntity = trialPartyRepo.findById(player.uniqueId)
+            ?: TrialPartyEntity(player.uniqueId, mutableMapOf())
+        trialPartyRepo.save(partyEntity)
 
         for (orderedAlly in partyEntity.allies) {
             val rowStartIndex = orderedAlly.key * 9
@@ -157,9 +185,10 @@ class TrialPartyInventoryService(
                 inventory.setItem(slot, gearPiece.value)
             }
 
-            val typeItem = ally.typeItem
-            if (typeItem.type == Material.AIR) continue
-            inventory.setItem(rowStartIndex, typeItem)
+            val allyType = ally.type ?: continue
+            val typeItem = trialAllyTypeItemService.createAllyTypeItem(allyType, unlockedAllyTypes[allyType]!!)
+            val typeIndex = rowStartIndex + TrialPartyInventorySlotType.TYPE_ITEM.slot
+            inventory.setItem(typeIndex, typeItem)
         }
     }
 }

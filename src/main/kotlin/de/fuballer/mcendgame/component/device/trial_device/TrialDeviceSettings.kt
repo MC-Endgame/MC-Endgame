@@ -40,6 +40,5 @@ object TrialDeviceSettings {
             setIngredient('C', Material.HEAVY_CORE)
         }
 
-    val TRIAL_DEVICE_INVENTORY_TITLE = TextComponent.create("Trial Device")
-    val TRIAL_PARTY_INVENTORY_TITLE = TextComponent.create("Trial Party")
+    val INVENTORY_TITLE = TextComponent.create("Trial Device")
 }

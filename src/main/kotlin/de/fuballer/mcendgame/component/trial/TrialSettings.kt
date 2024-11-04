@@ -4,7 +4,6 @@ import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
 import de.fuballer.mcendgame.component.custom_entity.types.bogged.BoggedEntityType
 import de.fuballer.mcendgame.component.custom_entity.types.husk.HuskEntityType
 import de.fuballer.mcendgame.component.custom_entity.types.melee_skeleton.MeleeSkeletonEntityType
-import de.fuballer.mcendgame.component.custom_entity.types.piglin_brute.PiglinBruteEntityType
 import de.fuballer.mcendgame.component.custom_entity.types.skeleton.SkeletonEntityType
 import de.fuballer.mcendgame.component.custom_entity.types.stray.StrayEntityType
 import de.fuballer.mcendgame.component.custom_entity.types.witch.WitchEntityType
@@ -35,7 +34,6 @@ object TrialSettings {
         RandomOption(30, HuskEntityType),
         RandomOption(20, StrayEntityType),
         RandomOption(20, MeleeSkeletonEntityType),
-        RandomOption(20, PiglinBruteEntityType),
         RandomOption(10, WitherSkeletonEntityType),
         RandomOption(7, BoggedEntityType),
         RandomOption(5, WitchEntityType),

@@ -1,5 +1,6 @@
 package de.fuballer.mcendgame.component.item.attribute.effects
 
+import de.fuballer.mcendgame.component.damage.DamageCalculationEvent
 import de.fuballer.mcendgame.component.item.attribute.CustomAttributeTypes
 import de.fuballer.mcendgame.framework.annotation.Service
 import de.fuballer.mcendgame.util.extension.AttributeRollExtension.getFirstAsDouble
@@ -8,6 +9,8 @@ import de.fuballer.mcendgame.util.random.RandomOption
 import de.fuballer.mcendgame.util.random.RandomUtil
 import org.bukkit.Sound
 import org.bukkit.SoundCategory
+import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
@@ -40,8 +43,23 @@ class EffectGainEffectService : Listener {
     fun on(event: EntityDeathEvent) {
         val entity = event.entity.killer ?: return
 
+        if (!addEffects(entity)) return
+
+        entity.playSound(entity.location, Sound.BLOCK_AMETHYST_CLUSTER_BREAK, SoundCategory.PLAYERS, 1f, 1f)
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    fun on(event: DamageCalculationEvent) {
+        val damager = event.damager
+        if (damager is Player) return
+        if (event.getFinalDamage() < event.damaged.health) return
+
+        addEffects(damager)
+    }
+
+    private fun addEffects(entity: LivingEntity): Boolean {
         val attributes = entity.getCustomAttributes()
-        val effectStealAttributes = attributes[CustomAttributeTypes.EFFECT_GAIN] ?: return
+        val effectStealAttributes = attributes[CustomAttributeTypes.EFFECT_GAIN] ?: return false
 
         for (effectStealAttribute in effectStealAttributes) {
             val effectStealChance = effectStealAttribute.attributeRolls.getFirstAsDouble()
@@ -49,8 +67,8 @@ class EffectGainEffectService : Listener {
 
             val effect = RandomUtil.pick(EFFECTS).option
             entity.addPotionEffect(effect)
-
-            entity.playSound(entity.location, Sound.BLOCK_AMETHYST_CLUSTER_BREAK, SoundCategory.PLAYERS, 1f, 1f)
         }
+
+        return true
     }
 }

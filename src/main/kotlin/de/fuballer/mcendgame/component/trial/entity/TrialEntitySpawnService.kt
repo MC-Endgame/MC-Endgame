@@ -8,28 +8,28 @@ import de.fuballer.mcendgame.component.dungeon.enemy.generation.EnemyGenerationS
 import de.fuballer.mcendgame.component.dungeon.generation.data.SpawnLocation
 import de.fuballer.mcendgame.component.trial.TrialSettings
 import de.fuballer.mcendgame.component.trial.db.instance.TrialInstanceEntity
-import de.fuballer.mcendgame.component.trial.db.party.TrialAllyEntity
 import de.fuballer.mcendgame.component.trial.db.party.TrialPartyEntity
 import de.fuballer.mcendgame.component.trial.db.party.TrialPartyRepository
+import de.fuballer.mcendgame.component.trial.db.unlocks.TrialUnlockedAllyTypesRepository
 import de.fuballer.mcendgame.framework.annotation.Service
 import de.fuballer.mcendgame.util.EntityUtil
 import de.fuballer.mcendgame.util.SchedulingUtil
 import de.fuballer.mcendgame.util.extension.EntityExtension.setIsAlly
 import de.fuballer.mcendgame.util.extension.EntityExtension.setIsEnemy
-import de.fuballer.mcendgame.util.extension.ItemStackExtension.getCustomEntityType
 import de.fuballer.mcendgame.util.random.RandomOption
 import de.fuballer.mcendgame.util.random.RandomUtil
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import kotlin.random.Random
 
 @Service
 class TrialEntitySpawnService(
     private val trialPartyRepo: TrialPartyRepository,
+    private val trialUnlockedAllyTypesRepo: TrialUnlockedAllyTypesRepository,
     private val trialEntitySpawnParticleService: TrialEntitySpawnParticleService,
     private val enemyGenerationService: EnemyGenerationService,
     private val equipmentGenerationService: EquipmentGenerationService,
@@ -54,20 +54,27 @@ class TrialEntitySpawnService(
     private fun getAlliesWithSpawnLocation(
         world: World,
         instance: TrialInstanceEntity,
-    ): List<Pair<TrialAllyEntity, Location>> {
+    ): List<Pair<TrialPlayerOwnedEntity, Location>> {
         val allies = getToSpawnAllies(world)
 
         val locations = getRandomLocations(world, instance.allySpawnLocations, allies.size)
         return allies.zip(locations)
     }
 
-    private fun getToSpawnAllies(world: World) = world.players
-        .mapNotNull { player -> trialPartyRepo.findById(player.uniqueId) }
-        .flatMap { party -> getToSpawnAllies(party) }
+    private fun getToSpawnAllies(world: World): MutableList<TrialPlayerOwnedEntity> {
+        val toSpawnAllies = mutableListOf<TrialPlayerOwnedEntity>()
 
-    private fun getToSpawnAllies(party: TrialPartyEntity) = party.allies.values.filter { isSpawnableAlly(it) }
+        for (player in world.players) {
+            val party = trialPartyRepo.findById(player.uniqueId) ?: continue
+            for (ally in getToSpawnAllies(party)) {
+                toSpawnAllies.add(TrialPlayerOwnedEntity(player, ally.type!!, ally.gear))
+            }
+        }
 
-    private fun isSpawnableAlly(ally: TrialAllyEntity) = ally.typeItem.getCustomEntityType() != null
+        return toSpawnAllies
+    }
+
+    private fun getToSpawnAllies(party: TrialPartyEntity) = party.allies.values.filter { it.type != null }
 
     private fun getEnemySpawnLocations(
         world: World,
@@ -88,7 +95,7 @@ class TrialEntitySpawnService(
     }
 
     private fun spawnAllies(
-        alliesWithSpawnLocation: List<Pair<TrialAllyEntity, Location>>,
+        alliesWithSpawnLocation: List<Pair<TrialPlayerOwnedEntity, Location>>,
         delay: Long,
     ) {
         SchedulingUtil.runTaskLater(delay) {
@@ -99,21 +106,25 @@ class TrialEntitySpawnService(
     }
 
     private fun spawnAlly(
-        ally: TrialAllyEntity,
+        ally: TrialPlayerOwnedEntity,
         location: Location
     ) {
-        val typeItem = ally.typeItem
-        if (typeItem.type == Material.AIR) return
+        val allyType = ally.customEntityType
+        val allyLevel = getPlayerAllyLevel(ally.player, allyType)
 
-        val customEntityType = typeItem.getCustomEntityType() ?: return
-
-        val entity = EntityUtil.spawnCustomEntity(customEntityType, location, 1) as? LivingEntity ?: return
+        val entity = EntityUtil.spawnCustomEntity(allyType, location, allyLevel) as? LivingEntity ?: return
         addGearToAlly(entity, ally.gear)
 
         EntityUtil.setAttribute(entity, Attribute.GENERIC_FOLLOW_RANGE, 100.0)
         entity.isCustomNameVisible = true
         entity.setIsAlly()
         entity.setIsEnemy(false)
+    }
+
+    private fun getPlayerAllyLevel(player: Player, customEntityType: CustomEntityType): Int {
+        val unlockedAllyTypes = trialUnlockedAllyTypesRepo.findById(player.uniqueId)?.unlockedTypes ?: return 1
+        val allyLevel = unlockedAllyTypes[customEntityType] ?: return 1
+        return allyLevel.level
     }
 
     private fun addGearToAlly(

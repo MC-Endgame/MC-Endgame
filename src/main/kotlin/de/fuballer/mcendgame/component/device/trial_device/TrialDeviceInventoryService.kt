@@ -65,7 +65,7 @@ class TrialDeviceInventoryService(
     private fun createTrialDeviceInventory(player: Player): Inventory {
         val inventory = InventoryUtil.createInventory(
             InventoryType.HOPPER,
-            TrialDeviceSettings.TRIAL_DEVICE_INVENTORY_TITLE,
+            TrialDeviceSettings.INVENTORY_TITLE,
             CustomInventoryType.TRIAL_DEVICE
         )
 
@@ -94,6 +94,6 @@ class TrialDeviceInventoryService(
     private fun getAlliesCount(player: Player): Int {
         val party = trialPartyRepository.findById(player.uniqueId) ?: return 0
 
-        return party.allies.values.count { it.typeItem.type != Material.AIR }
+        return party.allies.values.count { it.type != null }
     }
 }

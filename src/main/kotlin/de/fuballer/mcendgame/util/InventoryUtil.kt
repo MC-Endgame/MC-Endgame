@@ -6,6 +6,7 @@ import de.fuballer.mcendgame.util.extension.InventoryExtension.setCustomType
 import net.kyori.adventure.text.Component
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.Inventory
+import org.bukkit.inventory.InventoryHolder
 
 object InventoryUtil {
     fun createInventory(
@@ -25,6 +26,18 @@ object InventoryUtil {
         customType: CustomInventoryType
     ): Inventory {
         val inventory = PluginConfiguration.server().createInventory(null, size, title)
+        inventory.setCustomType(customType)
+
+        return inventory
+    }
+
+    fun createInventory(
+        holder: InventoryHolder,
+        size: Int,
+        title: Component,
+        customType: CustomInventoryType
+    ): Inventory {
+        val inventory = PluginConfiguration.server().createInventory(holder, size, title)
         inventory.setCustomType(customType)
 
         return inventory

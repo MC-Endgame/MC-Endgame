@@ -7,4 +7,5 @@ enum class CustomInventoryType {
     MAP_DEVICE,
     TRIAL_DEVICE,
     TRIAL_PARTY,
+    TRIAL_ALLY_TYPE_SELECTION,
 }

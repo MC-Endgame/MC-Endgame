@@ -91,7 +91,7 @@ class TrialService(
     }
 
     private fun spawnFireworks(world: World, spawnerLocation: Location) {
-        val location = spawnerLocation.clone().add(0.0, 0.8, 0.05)
+        val location = spawnerLocation.clone().add(0.5, 1.1, 0.5)
 
         for (i in 0 until TrialSettings.FIREWORK_COUNT) {
             SchedulingUtil.runTaskLater(i * TrialSettings.FIREWORK_STEP_DELAY) {

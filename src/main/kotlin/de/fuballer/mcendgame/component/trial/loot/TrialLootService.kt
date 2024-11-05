@@ -31,7 +31,7 @@ class TrialLootService : Listener {
         val instance = event.trialInstance
 
         val spawner = instance.spawner ?: return
-        val dropLocation = spawner.location.add(0.0, 0.8, 0.0)
+        val dropLocation = spawner.location.add(0.5, 1.1, 0.5)
 
         for ((index, item) in instance.currentLoot.withIndex()) {
             val damagedItem = ItemUtil.setRandomDurability(item)

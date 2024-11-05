@@ -1,12 +1,14 @@
 package de.fuballer.mcendgame.event
 
 import de.fuballer.mcendgame.component.portal.db.Portal
+import de.fuballer.mcendgame.component.trial.db.instance.TrialInstanceEntity
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
 import org.bukkit.World
 import org.bukkit.entity.Creature
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
+import org.bukkit.event.entity.EntityDeathEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.Recipe
 
@@ -138,6 +140,25 @@ class TrialWaveSpawnedEvent(
     val allies: List<Creature>,
     val enemies: List<Creature>,
 ) : HandleableEvent()
+
+/**
+ * Thrown whenever a trial wave is completed
+ */
+class TrialWaveCompletedEvent(
+    val world: World,
+    val trialInstance: TrialInstanceEntity,
+) : HandleableEvent()
+
+/**
+ * Thrown whenever a trial enemy dies
+ */
+class TrialEnemyDeathEvent(
+    val world: World,
+    val enemy: LivingEntity,
+    val trialInstance: TrialInstanceEntity,
+    val entityDeathEvent: EntityDeathEvent,
+) : HandleableEvent()
+
 
 /**
  * Thrown whenever an entity gets healed

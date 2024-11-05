@@ -7,8 +7,10 @@ import de.fuballer.mcendgame.util.extension.EntityExtension.setIsEnemy
 import de.fuballer.mcendgame.util.extension.EntityExtension.setMapTier
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.*
+import org.bukkit.inventory.ItemStack
 
 object EntityUtil {
     fun spawnCustomEntity(entityType: CustomEntityType, loc: Location, mapTier: Int): Entity? {
@@ -103,5 +105,18 @@ object EntityUtil {
         if (entity is Slime) {
             entity.size = 2
         }
+    }
+
+    fun getEquipmentList(entity: LivingEntity): List<ItemStack> {
+        val equipment = entity.equipment ?: return listOf()
+
+        return listOfNotNull(
+            equipment.itemInMainHand,
+            equipment.itemInOffHand,
+            equipment.helmet,
+            equipment.chestplate,
+            equipment.leggings,
+            equipment.boots
+        ).filter { it.type != Material.AIR }
     }
 }

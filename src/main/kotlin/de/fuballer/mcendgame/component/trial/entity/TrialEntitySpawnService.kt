@@ -48,7 +48,7 @@ class TrialEntitySpawnService(
     fun spawnEnemies(world: World, instance: TrialInstanceEntity, random: Random) {
         val enemyLocations = getEnemySpawnLocations(world, instance)
         trialEntitySpawnParticleService.createEnemySpawnParticlesTask(enemyLocations)
-        spawnEnemies(enemyLocations, instance.progress, TrialSettings.ENEMY_TYPES, TrialSettings.ENEMY_SPAWNING_TOTAL_PARTICLE_TIME, random)
+        spawnEnemies(enemyLocations, instance.level, TrialSettings.ENEMY_TYPES, TrialSettings.ENEMY_SPAWNING_TOTAL_PARTICLE_TIME, random)
     }
 
     private fun getAlliesWithSpawnLocation(

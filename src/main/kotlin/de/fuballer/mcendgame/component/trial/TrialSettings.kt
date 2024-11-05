@@ -10,8 +10,13 @@ import de.fuballer.mcendgame.component.custom_entity.types.witch.WitchEntityType
 import de.fuballer.mcendgame.component.custom_entity.types.wither_skeleton.WitherSkeletonEntityType
 import de.fuballer.mcendgame.component.custom_entity.types.zombie.ZombieEntityType
 import de.fuballer.mcendgame.util.random.RandomOption
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.Color
+import org.bukkit.FireworkEffect
 import org.bukkit.Material
 import kotlin.math.max
+import kotlin.random.Random
 
 object TrialSettings {
     val SPAWNER_MATERIAL = Material.TRIAL_SPAWNER
@@ -38,4 +43,30 @@ object TrialSettings {
         RandomOption(7, BoggedEntityType),
         RandomOption(5, WitchEntityType),
     )
+
+    fun getWaveCompletedMessage(level: Int) = Component.text("Wave completed! New Level: $level!", NamedTextColor.GREEN)
+
+    const val FIREWORK_COUNT = 6
+    const val FIREWORK_STEP_DELAY = 10L //ticks
+    val FIREWORK_COLORS = listOf(
+        Color.WHITE,
+        Color.SILVER,
+        Color.GRAY,
+        Color.BLACK,
+        Color.RED,
+        Color.MAROON,
+        Color.YELLOW,
+        Color.OLIVE,
+        Color.LIME,
+        Color.GREEN,
+        Color.AQUA,
+        Color.TEAL,
+        Color.BLUE,
+        Color.NAVY,
+        Color.FUCHSIA,
+        Color.PURPLE,
+        Color.ORANGE
+    )
+    val FIREWORK_TYPES = FireworkEffect.Type.entries.toTypedArray()
+    fun getFireworkPower() = Random.nextInt(2) + 1
 }

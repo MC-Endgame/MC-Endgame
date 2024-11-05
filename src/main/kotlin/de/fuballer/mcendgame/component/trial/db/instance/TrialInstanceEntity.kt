@@ -4,6 +4,7 @@ import de.fuballer.mcendgame.component.dungeon.generation.data.SpawnLocation
 import de.fuballer.mcendgame.framework.stereotype.Entity
 import org.bukkit.World
 import org.bukkit.block.Block
+import org.bukkit.inventory.ItemStack
 import java.util.*
 
 data class TrialInstanceEntity(
@@ -11,11 +12,12 @@ data class TrialInstanceEntity(
 
     var world: World,
 
-    var progress: Int,
+    var level: Int,
     var allySpawnLocations: List<SpawnLocation>,
     var enemySpawnLocations: List<SpawnLocation>,
 
     var spawner: Block? = null,
+    var currentLoot: MutableList<ItemStack> = mutableListOf(),
 
     var waveActive: Boolean = false
 ) : Entity<UUID> {

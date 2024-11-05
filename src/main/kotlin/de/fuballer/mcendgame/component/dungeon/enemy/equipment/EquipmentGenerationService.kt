@@ -93,7 +93,7 @@ class EquipmentGenerationService(
         return createRandomSortableEquipment(random, mapTier, itemProbability)
     }
 
-    private fun createRandomSortableEquipment(
+    fun createRandomSortableEquipment(
         random: Random,
         mapTier: Int,
         equipmentProbabilities: List<SortableRandomOption<out Equipment?>>,

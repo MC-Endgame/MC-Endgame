@@ -9,6 +9,7 @@ import de.fuballer.mcendgame.util.extension.ItemStackExtension.getTotem
 import de.fuballer.mcendgame.util.extension.ItemStackExtension.isCraftingItem
 import de.fuballer.mcendgame.util.extension.ItemStackExtension.isCustomItemType
 import de.fuballer.mcendgame.util.extension.WorldExtension.isDungeonWorld
+import de.fuballer.mcendgame.util.extension.WorldExtension.isTrialWorld
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -54,7 +55,8 @@ class FilterService(
     @EventHandler
     fun on(event: EntityPickupItemEvent) {
         val player = event.entity as? Player ?: return
-        if (!event.entity.world.isDungeonWorld()) return
+        val world = event.entity.world
+        if (!world.isDungeonWorld() && !world.isTrialWorld()) return
 
         val uuid = player.uniqueId
         val entity = filterRepo.findById(uuid) ?: return

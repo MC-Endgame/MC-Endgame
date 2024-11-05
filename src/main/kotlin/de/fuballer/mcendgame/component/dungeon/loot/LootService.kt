@@ -7,6 +7,7 @@ import de.fuballer.mcendgame.component.item.custom_item.CustomItemType
 import de.fuballer.mcendgame.component.totem.data.Totem
 import de.fuballer.mcendgame.event.DungeonEntityDeathEvent
 import de.fuballer.mcendgame.framework.annotation.Service
+import de.fuballer.mcendgame.util.EntityUtil
 import de.fuballer.mcendgame.util.ItemUtil
 import de.fuballer.mcendgame.util.extension.EntityExtension.getMapTier
 import de.fuballer.mcendgame.util.extension.EntityExtension.isBoss
@@ -17,14 +18,12 @@ import de.fuballer.mcendgame.util.extension.EntityExtension.isLootGoblin
 import de.fuballer.mcendgame.util.extension.EntityExtension.isMinion
 import de.fuballer.mcendgame.util.random.RandomUtil
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.inventory.EntityEquipment
 import org.bukkit.inventory.ItemStack
 import kotlin.random.Random
 
@@ -60,7 +59,7 @@ class LootService(
         val looting = getLootingLevel(killer)
         val magicFindMultiplier = ModifierUtil.getModifierMultiplier(killer, ModifierType.MAGIC_FIND)
 
-        for (item in getEquipment(entity.equipment)) {
+        for (item in EntityUtil.getEquipmentList(entity)) {
             val baseDropChance = getItemDropChance(item, looting)
             val finalDropChance = baseDropChance * magicFindMultiplier
 
@@ -72,7 +71,7 @@ class LootService(
     private fun dropLootGoblinLoot(entity: LivingEntity, world: World) {
         val location = entity.location
 
-        for (item in getEquipment(entity.equipment)) {
+        for (item in EntityUtil.getEquipmentList(entity)) {
             val itemDropChance = getItemDropChance(item, 1)
             if (itemDropChance == 0.0) continue
 
@@ -128,19 +127,6 @@ class LootService(
         }
 
         return LootSettings.ITEMS_DROP_CHANCE + LootSettings.ITEMS_DROP_CHANCE_PER_LOOTING * looting
-    }
-
-    private fun getEquipment(entityEquipment: EntityEquipment?): List<ItemStack> {
-        if (entityEquipment == null) return listOf()
-
-        return listOfNotNull(
-            entityEquipment.itemInMainHand,
-            entityEquipment.itemInOffHand,
-            entityEquipment.helmet,
-            entityEquipment.chestplate,
-            entityEquipment.leggings,
-            entityEquipment.boots
-        ).filter { it.type != Material.AIR }
     }
 
     private fun dropTotem(entity: LivingEntity) {

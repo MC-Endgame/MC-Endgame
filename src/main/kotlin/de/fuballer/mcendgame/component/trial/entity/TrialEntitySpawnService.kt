@@ -11,6 +11,8 @@ import de.fuballer.mcendgame.component.trial.db.instance.TrialInstanceEntity
 import de.fuballer.mcendgame.component.trial.db.party.TrialPartyEntity
 import de.fuballer.mcendgame.component.trial.db.party.TrialPartyRepository
 import de.fuballer.mcendgame.component.trial.db.unlocks.TrialUnlockedAllyTypesRepository
+import de.fuballer.mcendgame.event.EventGateway
+import de.fuballer.mcendgame.event.TrialEnemySpawnedEvent
 import de.fuballer.mcendgame.framework.annotation.Service
 import de.fuballer.mcendgame.util.EntityUtil
 import de.fuballer.mcendgame.util.SchedulingUtil
@@ -39,13 +41,13 @@ class TrialEntitySpawnService(
         spawnEnemies(world, instance, random)
     }
 
-    fun spawnAllies(world: World, instance: TrialInstanceEntity) {
+    private fun spawnAllies(world: World, instance: TrialInstanceEntity) {
         val alliesWithSpawnLocation = getAlliesWithSpawnLocation(world, instance)
         trialEntitySpawnParticleService.createAllySpawnParticlesTask(alliesWithSpawnLocation.map { it.second })
         spawnAllies(alliesWithSpawnLocation, TrialSettings.ALLY_SPAWNING_TOTAL_PARTICLE_TIME)
     }
 
-    fun spawnEnemies(world: World, instance: TrialInstanceEntity, random: Random) {
+    private fun spawnEnemies(world: World, instance: TrialInstanceEntity, random: Random) {
         val enemyLocations = getEnemySpawnLocations(world, instance)
         trialEntitySpawnParticleService.createEnemySpawnParticlesTask(enemyLocations)
         spawnEnemies(enemyLocations, instance.level, TrialSettings.ENEMY_TYPES, TrialSettings.ENEMY_SPAWNING_TOTAL_PARTICLE_TIME, random)
@@ -149,9 +151,13 @@ class TrialEntitySpawnService(
         random: Random,
     ) {
         SchedulingUtil.runTaskLater(delay) {
+            val enemies = mutableListOf<LivingEntity>()
             locations.forEach {
-                spawnEnemy(it, tier, randomEntityTypes, random)
+                enemies.add(spawnEnemy(it, tier, randomEntityTypes, random))
             }
+
+            val trialEnemySpawnedEvent = TrialEnemySpawnedEvent(enemies.toSet())
+            EventGateway.apply(trialEnemySpawnedEvent)
         }
     }
 

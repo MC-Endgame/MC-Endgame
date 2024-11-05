@@ -98,6 +98,16 @@ class DungeonEnemySpawnedEvent(
 ) : HandleableEvent()
 
 /**
+ * Thrown whenever enemies are spawned in a dungeon
+ *
+ * @param world the world mobs got spawned in
+ * @param entities the spawned entities
+ */
+class TrialEnemySpawnedEvent(
+    val entities: Set<LivingEntity>
+) : HandleableEvent()
+
+/**
  * Thrown whenever an entity dies inside a dungeon
  */
 class DungeonEntityDeathEvent(

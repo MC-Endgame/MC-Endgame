@@ -2,6 +2,7 @@ package de.fuballer.mcendgame.component.dungeon.enemy.team
 
 import de.fuballer.mcendgame.configuration.PluginConfiguration
 import de.fuballer.mcendgame.event.DungeonEnemySpawnedEvent
+import de.fuballer.mcendgame.event.TrialEnemySpawnedEvent
 import de.fuballer.mcendgame.framework.annotation.Service
 import de.fuballer.mcendgame.framework.stereotype.LifeCycleListener
 import org.bukkit.event.EventHandler
@@ -21,6 +22,11 @@ class TeamService : Listener, LifeCycleListener {
 
     @EventHandler
     fun on(event: DungeonEnemySpawnedEvent) {
+        event.entities.forEach { team!!.addEntry(it.uniqueId.toString()) }
+    }
+
+    @EventHandler
+    fun on(event: TrialEnemySpawnedEvent) {
         event.entities.forEach { team!!.addEntry(it.uniqueId.toString()) }
     }
 

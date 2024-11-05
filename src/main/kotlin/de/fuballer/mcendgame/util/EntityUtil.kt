@@ -11,6 +11,7 @@ import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.*
 import org.bukkit.inventory.ItemStack
+import kotlin.math.min
 
 object EntityUtil {
     fun spawnCustomEntity(entityType: CustomEntityType, loc: Location, mapTier: Int): Entity? {
@@ -118,5 +119,11 @@ object EntityUtil {
             equipment.leggings,
             equipment.boots
         ).filter { it.type != Material.AIR }
+    }
+
+    fun heal(entity: LivingEntity, heal: Double) {
+        val maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value ?: return
+        val newHealth = min(maxHealth, entity.health + heal)
+        entity.health = newHealth
     }
 }

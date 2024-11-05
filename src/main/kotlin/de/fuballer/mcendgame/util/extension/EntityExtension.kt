@@ -112,4 +112,6 @@ object EntityExtension {
     fun Entity.getPortalLocation() = PersistentDataUtil.getValue(this, TypeKeys.PORTAL_LOCATION)
 
     fun Entity.getDistance(to: Entity) = this.location.distance(to.location)
+
+    fun Entity.getNearest(to: List<Entity>) = to.minByOrNull { this.getDistance(it) }
 }

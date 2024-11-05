@@ -60,10 +60,9 @@ class TrialService(
 
         val instance = trialInstanceRepo.findByWorld(world) ?: return
 
-        if (entity.isEnemy()) {
-            val trialEnemyDeathEvent = TrialEnemyDeathEvent(world, entity, instance, event)
-            EventGateway.apply(trialEnemyDeathEvent)
-        }
+        if (!entity.isEnemy()) return
+        val trialEnemyDeathEvent = TrialEnemyDeathEvent(world, entity, instance, event)
+        EventGateway.apply(trialEnemyDeathEvent)
 
         val remainingEnemies = world.livingEntities.count { it.isEnemy() }
         if (remainingEnemies > 0) return

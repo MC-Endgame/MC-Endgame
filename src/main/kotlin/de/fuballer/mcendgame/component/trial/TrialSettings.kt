@@ -2,6 +2,7 @@ package de.fuballer.mcendgame.component.trial
 
 import de.fuballer.mcendgame.component.custom_entity.types.CustomEntityType
 import de.fuballer.mcendgame.component.custom_entity.types.bogged.BoggedEntityType
+import de.fuballer.mcendgame.component.custom_entity.types.dryad.DryadEntityType
 import de.fuballer.mcendgame.component.custom_entity.types.husk.HuskEntityType
 import de.fuballer.mcendgame.component.custom_entity.types.melee_skeleton.MeleeSkeletonEntityType
 import de.fuballer.mcendgame.component.custom_entity.types.skeleton.SkeletonEntityType
@@ -42,6 +43,7 @@ object TrialSettings {
         RandomOption(10, WitherSkeletonEntityType),
         RandomOption(7, BoggedEntityType),
         RandomOption(5, WitchEntityType),
+        RandomOption(5, DryadEntityType),
     )
 
     fun getWaveCompletedMessage(level: Int) = Component.text("Wave completed! New Level: $level!", NamedTextColor.GREEN)
